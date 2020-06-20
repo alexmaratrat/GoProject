@@ -1,0 +1,18 @@
+----GoFILTER -----
+
+I/ Objectif
+
+L'objectif du projet est de réaliser un programme en Golang permettant d'appliquer différents filtres à des images en format jpeg, jpg, png.
+
+
+II/ Description
+
+A l'ouverture du programme, le format de l'image est demandé ainsi que le nom du fichier, qui doit être préalablement placé dans le même dossier que le programme.
+Les filtres proposés sont .... . Chaque filter
+Le programme est composé de 4 parties. Le main...
+La première fonction "decomp", permet de lire l'image et de la renvoyer sous uneliste de 4 tableaux uint32, qui seront traités par les fonctions suivantes.
+La deuxième catégorie de fonction est les filtres que l'on souhaite appliquer. Ceux ci vont se concentrer uniquement sur le traitement des 4 tableaux pour appliquer les effets souhaités.
+La dernière fonction est de recomposer l'image à partir des 4 tableaux 
+
+Une image étant composées de RGBA, sous uint32, 
+Le programme produira une nouvelle image avec le filtre, au même format que celui d'entrée.
