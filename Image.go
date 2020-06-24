@@ -17,7 +17,8 @@ func main(){
 	text,_,_ :=reader.ReadLine()
 	txt := string(text)
 	fmt.Println(txt)
-	decomp(txt)
+	R,G,B,A := decomp(txt)
+	filterLumi(R,G,B,A)
 	//construct()
 	//
 }
@@ -44,24 +45,54 @@ func decomp(filename string) ([]uint32,[]uint32,[]uint32,[]uint32){
 			G = append(G,g)
 			B = append(B,b)
 			A = append(A,a)
-			fmt.Println(r,g,b,a)
 			//a = 2
 			//im.At(i,j).RGBA() = r,g,b,a
 		}
 	}
-	fmt.Println("HERE WE GO",R)
+	fmt.Println("Avant decomp",R[0])
 	//out, err := os.Create("output.jpeg")
 	//err = jpeg.Encode(out,im,80)
-	fmt.Println("Image générée ")
 	return R,G,B,A
 }
 func filterLumi(R,G,B,A []uint32)([]uint32,[]uint32,[]uint32,[]uint32){
 	chR := make(chan uint32)
 	chG := make(chan uint32)
 	chB := make(chan uint32)
+	fmt.Println("ici")
 	go goLumi(R,100,chR)
+	retR :=make([]uint32,0,len(R))
+	okR := true
+	for okR==true{
+		var temp uint32
+		temp, ok :=<- chR
+		retR = append(retR,temp)
+		if ok == false {
+			okR = false
+		}
+	}
 	go goLumi(G,100,chG)
+	retG :=make([]uint32,0,len(G))
+        okG := true
+        for okG==true{
+                var temp uint32
+                temp, ok :=<- chG
+                retG = append(retG,temp)
+                if ok == false {
+                        okG = false
+                }
+        }
 	go goLumi(B,100,chB)
+	retB :=make([]uint32,0,len(B))
+        okB := true
+        for okB==true{
+                var temp uint32
+                temp, ok :=<- chB
+                retB = append(retB,temp)
+                if ok == false {
+                        okB = false
+                }
+        }
+	fmt.Println(retR[0])
 	return retR,retG,retB,A
 
 }
@@ -69,4 +100,5 @@ func goLumi(R []uint32, l uint32, ch chan uint32,){
 	for i:=0;i<len(R);i++{
 		ch <- R[i]+l
 	}
+	close(ch)
 }
